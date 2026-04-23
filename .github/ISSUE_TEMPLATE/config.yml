@@ -4,5 +4,5 @@ blank_issues_enabled: false
 # Memberikan informasi tambahan jika pengguna butuh bantuan di luar pembuatan issue
 contact_links:
   - name: Proyek Capstone Support
-    url: https://github.com/Cyancyrt/devops-capstone-project/discussions
+    url: https://github.com/Cyancyrt/devops-capstone-project/blob/main/.github/ISSUE_TEMPLATE/user-story.md
     about: Gunakan link ini jika kamu ingin bertanya atau berdiskusi sebelum membuat Issue.
