@@ -1,8 +1,8 @@
+# Menonaktifkan opsi "Blank Issue" agar semua orang terpaksa menggunakan template yang sudah kita buat
 blank_issues_enabled: false
+
+# Memberikan informasi tambahan jika pengguna butuh bantuan di luar pembuatan issue
 contact_links:
-  - name: GitHub Community Support
-    url: https://github.com/orgs/community/discussions
-    about: Please ask and answer questions here.
-  - name: GitHub Security Bug Bounty
-    url: https://bounty.github.com/
-    about: Please report security vulnerabilities here.
+  - name: Proyek Capstone Support
+    url: https://github.com/Cyancyrt/devops-capstone-project/discussions
+    about: Gunakan link ini jika kamu ingin bertanya atau berdiskusi sebelum membuat Issue.
