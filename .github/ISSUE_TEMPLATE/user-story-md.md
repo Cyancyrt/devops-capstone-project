@@ -1,5 +1,5 @@
 ---
-name: user-story.md
+name: user-story
 about: Describe this issue template's purpose here.
 title: ''
 labels: ''
