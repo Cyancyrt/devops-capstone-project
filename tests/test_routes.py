@@ -5,9 +5,17 @@ Test cases can be run with the following:
   nosetests -v --with-spec --spec-color
   coverage report -m
 """
+import collections
+try:
+    from collections import Callable
+except ImportError:
+    from collections.abc import Callable
+    collections.Callable = Callable
+
 import os
 import logging
 from unittest import TestCase
+from service import talisman
 from tests.factories import AccountFactory
 from service.common import status  # HTTP Status Codes
 from service.models import db, Account, init_db
@@ -18,7 +26,7 @@ DATABASE_URI = os.getenv(
 )
 
 BASE_URL = "/accounts"
-
+HTTPS_ENVIRON = {'wsgi.url_scheme': 'https'}
 
 ######################################################################
 #  T E S T   C A S E S
@@ -33,6 +41,7 @@ class TestAccountService(TestCase):
         app.config["DEBUG"] = False
         app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
         app.logger.setLevel(logging.CRITICAL)
+        talisman.force_https = False
         init_db(app)
 
     @classmethod
@@ -122,5 +131,22 @@ class TestAccountService(TestCase):
             content_type="test/html"
         )
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-
+    
+    def test_security_headers(self):
+        """It should return security headers"""
+        # Kita memanggil root "/" dengan simulasi protokol HTTPS
+        response = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Daftar header yang kita harapkan ada setelah Talisman dipasang
+        headers = {
+            'X-Frame-Options': 'SAMEORIGIN',
+            'X-Content-Type-Options': 'nosniff',
+            'Content-Security-Policy': 'default-src \'self\'; object-src \'none\'',
+            'Referrer-Policy': 'strict-origin-when-cross-origin'
+        }
+        
+        # Mengecek satu per satu apakah header tersebut muncul di respon
+        for key, value in headers.items():
+            self.assertEqual(response.headers.get(key), value)
     # ADD YOUR TEST CASES HERE ...
