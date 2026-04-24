@@ -57,12 +57,12 @@ def create_accounts():
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
 
+
 ######################################################################
 # LIST ALL ACCOUNTS
 ######################################################################
 
 # ... place you code here to LIST accounts ...
-
 
 
 ######################################################################
@@ -109,7 +109,6 @@ def delete_accounts(account_id):
         account.delete()
 
     return "", status.HTTP_204_NO_CONTENT
-
 
 
 def check_content_type(media_type):
