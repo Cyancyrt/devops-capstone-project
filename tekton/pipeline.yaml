@@ -9,6 +9,8 @@ spec:
     - name: branch
       type: string
       default: "main"
+    - name: build-image
+      type: string
   workspaces:
     - name: pipeline-workspace
   tasks:
@@ -48,6 +50,20 @@ spec:
         value: "sqlite:///test.db"
       - name: args
         value: "-v --with-spec --spec-color"
+      workspaces:
+      - name: source
+        workspace: pipeline-workspace
+
+    - name: build
+      taskRef:
+        name: buildah
+        kind: ClusterTask
+      runAfter:
+        - lint
+        - tests
+      params:
+      - name: IMAGE
+        value: "$(params.build-image)"
       workspaces:
       - name: source
         workspace: pipeline-workspace
